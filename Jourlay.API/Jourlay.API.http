@@ -1,0 +1,6 @@
+@Jourlay.API_HostAddress = http://localhost:5007
+
+GET {{Jourlay.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
