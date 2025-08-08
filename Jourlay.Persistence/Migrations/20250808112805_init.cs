@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Jourlay.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class firtMigrat : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,9 +20,13 @@ namespace Jourlay.Persistence.Migrations
                     instagram_link = table.Column<string>(type: "text", nullable: false),
                     youtube_link = table.Column<string>(type: "text", nullable: false),
                     twitter_link = table.Column<string>(type: "text", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                    is_active = table.Column<bool>(type: "boolean", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<long>(type: "bigint", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<long>(type: "bigint", nullable: true),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    base_created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -37,9 +41,13 @@ namespace Jourlay.Persistence.Migrations
                     contact_us_id = table.Column<Guid>(type: "uuid", nullable: false),
                     opening_hours_weekday = table.Column<string>(type: "text", nullable: false),
                     opening_hours_weekend = table.Column<string>(type: "text", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                    is_active = table.Column<bool>(type: "boolean", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<long>(type: "bigint", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<long>(type: "bigint", nullable: true),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    base_created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,9 +71,12 @@ namespace Jourlay.Persistence.Migrations
                     is_primary = table.Column<bool>(type: "boolean", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<long>(type: "bigint", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<long>(type: "bigint", nullable: true),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    base_created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,9 +101,12 @@ namespace Jourlay.Persistence.Migrations
                     is_primary = table.Column<bool>(type: "boolean", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<long>(type: "bigint", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<long>(type: "bigint", nullable: true),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    base_created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {

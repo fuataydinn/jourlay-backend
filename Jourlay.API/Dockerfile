@@ -1,32 +1,53 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-# For more information, please see https://aka.ms/containercompat
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-nanoserver-1809 AS base
+# ======================
+# 1. Base runtime image
+# ======================
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
-# This stage is used to build the service project
-FROM mcr.microsoft.com/dotnet/sdk:9.0-nanoserver-1809 AS build
+# ======================
+# 2. Build stage
+# ======================
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Jourlay.API/Jourlay.API.csproj", "Jourlay.API/"]
-RUN dotnet restore "./Jourlay.API/Jourlay.API.csproj"
-COPY . .
-WORKDIR "/src/Jourlay.API"
-RUN dotnet build "./Jourlay.API.csproj" -c %BUILD_CONFIGURATION% -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
+# Proje dosyalarýný kopyala
+COPY ["Jourlay.API/Jourlay.API.csproj", "Jourlay.API/"]
+COPY ["Jourlay.Application/Jourlay.Application.csproj", "Jourlay.Application/"]
+COPY ["Jourlay.Domain/Jourlay.Domain.csproj", "Jourlay.Domain/"]
+COPY ["Jourlay.Infrastructure/Jourlay.Infrastructure.csproj", "Jourlay.Infrastructure/"]
+COPY ["Jourlay.Persistence/Jourlay.Persistence.csproj", "Jourlay.Persistence/"]
+
+# NuGet restore
+RUN dotnet restore "Jourlay.API/Jourlay.API.csproj"
+
+# Tüm kaynak kodlarý kopyala
+COPY . .
+
+# Build
+WORKDIR "/src/Jourlay.API"
+RUN dotnet build "Jourlay.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# ======================
+# 3. Publish stage
+# ======================
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Jourlay.API.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Jourlay.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
+# ======================
+# 4. Final stage
+# ======================
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
+
+# Yayýnlanan uygulama dosyalarýný kopyala
 COPY --from=publish /app/publish .
+
+EXPOSE 8080
+EXPOSE 8081
+
+# Uygulamayý çalýþtýr
 ENTRYPOINT ["dotnet", "Jourlay.API.dll"]

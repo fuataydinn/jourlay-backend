@@ -28,3 +28,8 @@ README.md
 !.git/config
 !.git/packed-refs
 !.git/refs/heads/**
+
+# React specific
+jourlay-react-app/node_modules
+jourlay-react-app/build
+jourlay-react-app/.env
