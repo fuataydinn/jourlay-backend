@@ -3,8 +3,7 @@
 # ======================
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 10000
 
 # ======================
 # 2. Build stage
@@ -40,14 +39,20 @@ RUN dotnet publish "Jourlay.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish 
 # ======================
 # 4. Final stage
 # ======================
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+FROM base AS final
 WORKDIR /app
+
+# Render için curl yükle (health check için)
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Yayýnlanan uygulama dosyalarýný kopyala
 COPY --from=publish /app/publish .
 
-EXPOSE 8080
-EXPOSE 8081
+# Render'ýn beklediði port
+EXPOSE 10000
+
+# Environment variable for port
+ENV ASPNETCORE_URLS=http://+:10000
 
 # Uygulamayý çalýþtýr
 ENTRYPOINT ["dotnet", "Jourlay.API.dll"]
