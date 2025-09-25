@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // DbContext configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Production")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -32,7 +32,7 @@ builder.Services.AddCors(options =>
 
 // Health checks
 builder.Services.AddHealthChecks()
-    .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    .AddNpgSql(builder.Configuration.GetConnectionString("Production"));
 
 var app = builder.Build();
 
