@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", builder =>
     {
-        builder.WithOrigins("http://localhost:3000", "http://frontend:80")
+        builder.WithOrigins("http://localhost:3000", "https://jourlay-frontend.onrender.com/")
                .AllowAnyMethod()
                .AllowAnyHeader()
                .AllowCredentials();
